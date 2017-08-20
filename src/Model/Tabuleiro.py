@@ -17,6 +17,12 @@ class Tabuleiro:
 	def getMatriz(self):
 		return self.__tabuleiro
 
+	def getValor(self, x, y):
+		if x > len(self.__tabuleiro) or y > len(self.__tabuleiro[0]):
+			return -1
+		else:
+			return self.__tabuleiro[x][y]
+
 	def espacoVazio(self, x, y):
 		return (self.__tabuleiro[x][y] == 0)
 
