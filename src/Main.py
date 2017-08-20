@@ -1,18 +1,8 @@
-from GUI.GUI import GUI
+from Controller import Controller
 
 def main():
-	window = GUI()
-	while True:
-		window.refresh()
-
-	# PvP ou PvPC?
-
-	# P1 começa?
-
-	# Inicializa valores
-
-	# ciclo principal do jogo
-	pass
+	controller = Controller(15, 15)
+	controller.mainLoop()
 
 if __name__ == "__main__":
 	main()

@@ -1,11 +1,10 @@
-from Jogador import Jogador
+from Model.Jogador import Jogador
 
 
-# Classe Computador que é um tipo de jogador.
 class Computador(Jogador):
 
 	# Quanto maior a dificuldade mais niveis da arvore serão explorados
-	__dificuldade = 3
+	__dificuldade = None
 
 	def __init__(self, dificuldade):
 		__dificuldade = dificuldade

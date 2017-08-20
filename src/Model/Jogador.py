@@ -1,7 +1,6 @@
 from abc import abstractmethod
 
 
-# Classe Abstrata jogador.
 class Jogador:
 
 	@abstractmethod
