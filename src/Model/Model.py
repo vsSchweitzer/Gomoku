@@ -37,5 +37,8 @@ class Model:
 		if self.__jogadorDaVez == 3:
 			self.__jogadorDaVez = 1
 
+		if self.__tabuleiroAtual.fimDeJogo():
+			print("FIM DE JOGO!")
+
 	def getMatriz(self):
 		return self.__tabuleiroAtual.getMatriz()

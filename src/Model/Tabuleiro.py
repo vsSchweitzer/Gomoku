@@ -19,3 +19,9 @@ class Tabuleiro:
 
 	def espacoVazio(self, x, y):
 		return (self.__tabuleiro[x][y] == 0)
+
+	def fimDeJogo(self):
+		for enc in self.__encadeamentos:
+			if enc.getComprimento() >= 5:
+				return True
+		return False

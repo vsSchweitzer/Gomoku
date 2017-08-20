@@ -19,3 +19,6 @@ class Encadeamento:
 
 	def getPontos(self):
 		return (pow(len(self.__coordenadas), 2) * self.__aberturas)
+
+	def getComprimento(self):
+		return len(self.__coordenadas)
