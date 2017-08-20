@@ -1,5 +1,8 @@
 from tkinter import *
 import math
+from Model.Adversario import Adversario
+
+
 
 class View:
 
@@ -12,6 +15,9 @@ class View:
 
 	__horSpaces = None
 	__vertSpaces = None
+
+	__opcaoAdversario = None
+	__opcaoPrimeiro = None
 
 	def __init__(self, controller, horSpaces, vertSpaces):
 		self.__controller = controller
@@ -26,13 +32,15 @@ class View:
 		self.initializeMainMenu()
 		self.initializeGameMenu()
 
-		'''
+
 		self.displayMainMenu(True)
 		self.displayGameMenu(False)
 		'''
 		self.displayMainMenu(False)
 		self.displayGameMenu(True)
+		'''
 
+	def mainLoop(self):
 		self.__root.mainloop()
 
 	def initializeMainMenu(self):
@@ -48,12 +56,13 @@ class View:
 
 		frame_escolhaOponente = Frame(self.__frame_menuPrincipal)
 		frame_escolhaOponente.grid(row=2)
-		self.__opcaoJogador = IntVar()
-		Label(frame_escolhaOponente, text="Escolha o Jogador 2:").grid(row=0, columnspan=2)
-		radio_pvp = Radiobutton(frame_escolhaOponente, text="Outro Jogador", var=self.__opcaoJogador, value=0)
-		radio_pvp.grid(row=1, column=0)
-		radio_pvpc = Radiobutton(frame_escolhaOponente, text="PC", var=self.__opcaoJogador, value=1)
-		radio_pvpc.grid(row=1, column=1)
+		self.__opcaoAdversario = IntVar()
+		Label(frame_escolhaOponente, text="Você é o Jogador 1").grid(row=0, columnspan=2)
+		Label(frame_escolhaOponente, text="Escolha o Jogador 2:").grid(row=1, columnspan=2)
+		radio_pvp = Radiobutton(frame_escolhaOponente, text="Outro Jogador", var=self.__opcaoAdversario, value=0)
+		radio_pvp.grid(row=2, column=0)
+		radio_pvpc = Radiobutton(frame_escolhaOponente, text="PC", var=self.__opcaoAdversario, value=1, state=DISABLED)  # DISABLED para primeira versão
+		radio_pvpc.grid(row=2, column=1)
 
 		Frame(self.__frame_menuPrincipal).grid(row=3, pady=separatorSpace)  # Separator
 
@@ -104,8 +113,6 @@ class View:
 		else:
 			self.__frame_jogo.pack_forget()
 
-	# numColunas é len(matrix[0])
-	# numLinhas é len(matrix)
 	def drawGrid(self, thck=2):
 		lineColor = "LemonChiffon4"
 		larguraCanvas = int(self.__canvas_tabuleiro.cget("width"))
@@ -157,3 +164,13 @@ class View:
 		casaX = max(0, min(math.floor(event.x / pxSquareWidth), self.__horSpaces - 1))
 		casaY = max(0, min(math.floor(event.y / pxSquareHeight), self.__vertSpaces - 1))
 		self.__controller.CB_posicaoTabuleiro(casaX, casaY)
+
+	def getJogadorInicial(self):
+		return (self.__opcaoPrimeiro.get() + 1)
+
+	def getTipoAdversario(self):
+		return Adversario(self.__opcaoAdversario.get())
+
+	def irParaJogo(self):
+		self.displayMainMenu(False)
+		self.displayGameMenu(True)
