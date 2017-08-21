@@ -1,7 +1,5 @@
 from tkinter import *
 import math
-from Model.Adversario import Adversario
-
 
 
 class View:
@@ -169,7 +167,7 @@ class View:
 		return (self.__opcaoPrimeiro.get() + 1)
 
 	def getTipoAdversario(self):
-		return Adversario(self.__opcaoAdversario.get())
+		return self.__opcaoAdversario.get()
 
 	def irParaJogo(self):
 		self.displayMainMenu(False)

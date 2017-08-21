@@ -1,5 +1,7 @@
 from Model.Tabuleiro import Tabuleiro
 from Model.Adversario import Adversario
+from Model.Jogador import Jogador
+from Model.Coordenada import Coordenada
 
 
 # Fachada para o modelo
@@ -18,14 +20,11 @@ class Model:
 	def setAdversario(self, adversario):
 		self.__adversario = adversario
 
-	def processaTurno(self):
-		if self.__adversario == Adversario.COMPUTADOR and self.__jogadorDaVez == 2:
-			pass
-
 	def jogar(self, x, y):
-		if self.__tabuleiroAtual.espacoVazio(x,y):
-			if (self.__adversario == Adversario.HUMANO) or (self.__adversario == Adversario.COMPUTADOR and self.__jogadorDaVez == 1):
-				self.__tabuleiroAtual.adicionarPeca(x, y, self.__jogadorDaVez)
+		coord = Coordenada(x, y)
+		if self.__tabuleiroAtual.espacoVazio(coord):
+			if (self.__adversario == Adversario.HUMANO) or (self.__adversario == Adversario.COMPUTADOR and self.__jogadorDaVez == Jogador.UM):
+				self.__tabuleiroAtual.adicionarPeca(coord, self.__jogadorDaVez)
 				self.passaVez()
 
 			if self.__adversario == Adversario.COMPUTADOR:
@@ -33,10 +32,7 @@ class Model:
 				self.passaVez()
 
 	def passaVez(self):
-		self.__jogadorDaVez = self.__jogadorDaVez + 1
-		if self.__jogadorDaVez == 3:
-			self.__jogadorDaVez = 1
-
+		self.__jogadorDaVez = Jogador.jogadorOposto(self.__jogadorDaVez)
 		if self.__tabuleiroAtual.fimDeJogo():
 			print("FIM DE JOGO!")
 

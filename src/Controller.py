@@ -1,5 +1,5 @@
-from View.View import View
-from Model.Model import Model
+from View.View import *
+from Model.Model import *
 
 
 class Controller:
@@ -16,8 +16,13 @@ class Controller:
 	# View Callbacks:
 	def CB_botaoComecarJogo(self, event):
 		self.__view.irParaJogo()
-		self.__model.setJogadorDaVez(self.__view.getJogadorInicial())
-		self.__model.setAdversario(self.__view.getTipoAdversario())
+
+		jogadorInicial = Jogador(self.__view.getJogadorInicial())
+		self.__model.setJogadorDaVez(jogadorInicial)
+
+		tipoAdversario = Adversario(self.__view.getTipoAdversario())
+		self.__model.setAdversario(tipoAdversario)
+
 		print("Jogo Começou")
 
 	def CB_posicaoTabuleiro(self, x, y):
