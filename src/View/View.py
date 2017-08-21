@@ -102,7 +102,7 @@ class View:
 		self.__frame_jogo = Frame(self.__root)
 
 		frame_tabuleiro = Frame(self.__frame_jogo, bd=5, relief=SUNKEN)
-		frame_tabuleiro.grid(row=0, column=0, sticky=N+S+E+W)
+		frame_tabuleiro.grid(row=0, column=0, rowspan=2, sticky=N+S+E+W)
 		self.__canvas_tabuleiro = Canvas(frame_tabuleiro, width=525, height=525, bg="lemon chiffon")
 		self.__canvas_tabuleiro.bind("<Button-1>", self.boardClick)
 		self.__canvas_tabuleiro.grid()
@@ -221,3 +221,12 @@ class View:
 
 	def setTempoMinMax(self, tempo):
 		self.__tempoMinMax.set(tempo)
+
+	def mostrarAreaVencedor(self, jogador):
+		texto = "Jogador " + str(jogador) + " venceu!"
+
+		#Frame(self.__frame_jogo).grid(row=1, column=1, padx=10)  # Separator
+
+		frame_vencedor = Frame(self.__frame_jogo, bd=5, relief=SUNKEN)
+		frame_vencedor.grid(row=1, column=2)
+		Label(frame_vencedor, text=texto).grid(padx=10, pady=10)

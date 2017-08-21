@@ -23,18 +23,22 @@ class Model:
 	def jogar(self, x, y):
 		coord = Coordenada(x, y)
 		if self.__tabuleiroAtual.espacoVazio(coord):
-			if (self.__adversario == Adversario.HUMANO) or (self.__adversario == Adversario.COMPUTADOR and self.__jogadorDaVez == Jogador.UM):
+			if ((self.__adversario == Adversario.HUMANO) or (self.__adversario == Adversario.COMPUTADOR and self.__jogadorDaVez == Jogador.UM)) and (not self.__tabuleiroAtual.getFimDeJogo()):
 				self.__tabuleiroAtual.adicionarPeca(coord, self.__jogadorDaVez)
 				self.passaVez()
 
-			if self.__adversario == Adversario.COMPUTADOR:
-				#self.__computador.jogar()
+			if (self.__adversario == Adversario.COMPUTADOR) and (not self.__tabuleiroAtual.getFimDeJogo()):
+				#self.__computador.jogar(self.__tabuleiroArual)
 				self.passaVez()
+
+	def getVencedor(self):
+		if self.__tabuleiroAtual.getFimDeJogo():
+			return self.__tabuleiroAtual.getVencedor()
+		else:
+			return None
 
 	def passaVez(self):
 		self.__jogadorDaVez = Jogador.jogadorOposto(self.__jogadorDaVez)
-		if self.__tabuleiroAtual.fimDeJogo():
-			print("FIM DE JOGO!")
 
 	def getMatriz(self):
 		return self.__tabuleiroAtual.getMatriz()

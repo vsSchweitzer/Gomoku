@@ -9,6 +9,9 @@ class Tabuleiro:
 	__tabuleiro = None
 	__encadeamentos = None
 
+	__fimDeJogo = None
+	__vencedor = None
+
 	def __init__(self, numLinhas, numColunas):
 		self.__tabuleiro = []
 		for i in range(numLinhas):
@@ -16,10 +19,12 @@ class Tabuleiro:
 			for j in range(numColunas):
 				self.__tabuleiro[i].append(0)
 		self.__encadeamentos = []
+		self.__fimDeJogo = False
 
 	def adicionarPeca(self, coord, jogador):
 		self.__tabuleiro[coord.x][coord.y] = jogador.value
 		self.verificaEncadeamentos(coord, jogador)
+		self.verificaFimDeJogo()
 
 	def getMatriz(self):
 		return self.__tabuleiro
@@ -39,11 +44,19 @@ class Tabuleiro:
 	def espacoVazio(self, coord):
 		return (self.__tabuleiro[coord.x][coord.y] == 0)
 
-	def fimDeJogo(self):
+	def getFimDeJogo(self):
+		return self.__fimDeJogo
+
+	def getVencedor(self):
+		return self.__vencedor
+
+	def verificaFimDeJogo(self):
+		self.__fimDeJogo = False
 		for enc in self.__encadeamentos:
 			if enc.getComprimento() >= 5:
-				return True
-		return False
+				self.__fimDeJogo = True
+				self.__vencedor = enc.getJogador()
+				break
 
 	# Retorna o valor no tabuleiro na posição coordC seguindo a sequencia CoordA, CoordB, CoordC.
 	def proximaPecaNaSequencia(self, CoordA, CoordB):

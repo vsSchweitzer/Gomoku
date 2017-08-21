@@ -30,6 +30,10 @@ class Controller:
 		print("O espaço do tabuleiro na posição", x, y, "foi clicado")
 		self.__model.jogar(x, y)
 
+		vencedor = self.__model.getVencedor()
+		if vencedor != None:
+			self.__view.mostrarAreaVencedor(vencedor.value)
+
 		jogadorDaVez = self.__model.getJogadorDaVez()
 		self.__view.setJogadorDaVez(jogadorDaVez)
 
