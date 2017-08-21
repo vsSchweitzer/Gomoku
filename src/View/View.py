@@ -101,7 +101,7 @@ class View:
 		separatorSpace = 20
 		self.__frame_jogo = Frame(self.__root)
 
-		frame_tabuleiro = Frame(self.__frame_jogo)
+		frame_tabuleiro = Frame(self.__frame_jogo, bd=5, relief=SUNKEN)
 		frame_tabuleiro.grid(row=0, column=0, sticky=N+S+E+W)
 		self.__canvas_tabuleiro = Canvas(frame_tabuleiro, width=525, height=525, bg="lemon chiffon")
 		self.__canvas_tabuleiro.bind("<Button-1>", self.boardClick)
@@ -109,8 +109,8 @@ class View:
 
 		Frame(self.__frame_jogo).grid(row=0, column=1, padx=10)  # Separator
 
-		frame_info = Frame(self.__frame_jogo)
-		frame_info.grid(row=0, column=2)
+		frame_info = Frame(self.__frame_jogo, bd=5, relief=SUNKEN)
+		frame_info.grid(row=0, column=2, sticky=N)
 		Label(frame_info, text="Jogador da vez:").grid(row=0, column=0, columnspan=2)
 		Label(frame_info, textvariable=self.__textoJogadorDaVez).grid(row=1, column=0, columnspan=2)
 
@@ -121,8 +121,6 @@ class View:
 		Label(frame_info, textvariable=self.__scoreJ1).grid(row=5, column=0)
 		Label(frame_info, text="Jogador 2:").grid(row=4, column=1, padx=10)
 		Label(frame_info, textvariable=self.__scoreJ2).grid(row=5, column=1)
-
-
 
 		self.__frameIteracoes = Frame(frame_info)
 		self.__frameIteracoes.grid(row=7, columnspan=2)
