@@ -1,6 +1,7 @@
 from Model.Coordenada import Coordenada
 from Model.Direcao import Direcao
 from Model.Encadeamento import Encadeamento
+from Model.Jogador import Jogador
 
 
 class Tabuleiro:
@@ -233,3 +234,15 @@ class Tabuleiro:
 						for coordEnc in coordenadas:
 							if coord == coordEnc:
 								return enc
+
+	# Retorna uma tupla de 3 elementos: (Pontuacao P1, Pontuacao P2, Diferenca)
+	def getPontuacao(self):
+		totalP1 = 0
+		totalP2 = 0
+		for enc in self.__encadeamentos:
+			if enc.getJogador() == Jogador.UM:
+				totalP1 += enc.getPontuacao()
+			else:
+				totalP2 += enc.getPontuacao()
+
+		return (totalP1, totalP2, totalP1-totalP2)

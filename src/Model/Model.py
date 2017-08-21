@@ -38,3 +38,9 @@ class Model:
 
 	def getMatriz(self):
 		return self.__tabuleiroAtual.getMatriz()
+
+	def getJogadorDaVez(self):
+		return self.__jogadorDaVez.value
+
+	def getPontuacao(self):
+		return self.__tabuleiroAtual.getPontuacao()

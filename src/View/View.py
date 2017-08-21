@@ -14,8 +14,15 @@ class View:
 	__horSpaces = None
 	__vertSpaces = None
 
+	__frameIteracoes = None
+
 	__opcaoAdversario = None
 	__opcaoPrimeiro = None
+	__textoJogadorDaVez = None
+	__scoreJ1 = None
+	__scoreJ2 = None
+	__iteracoesMinMax = None
+	__tempoMinMax = None
 
 	def __init__(self, controller, horSpaces, vertSpaces):
 		self.__controller = controller
@@ -27,16 +34,19 @@ class View:
 		self.__root.resizable(width=False, height=False)
 		self.__root.minsize(width=800, height=600)
 
+		self.__opcaoAdversario = IntVar()
+		self.__opcaoPrimeiro = IntVar()
+		self.__textoJogadorDaVez = StringVar()
+		self.__scoreJ1 = IntVar()
+		self.__scoreJ2 = IntVar()
+		self.__iteracoesMinMax = IntVar()
+		self.__tempoMinMax = IntVar()
+
 		self.initializeMainMenu()
 		self.initializeGameMenu()
 
-
 		self.displayMainMenu(True)
 		self.displayGameMenu(False)
-		'''
-		self.displayMainMenu(False)
-		self.displayGameMenu(True)
-		'''
 
 	def mainLoop(self):
 		self.__root.mainloop()
@@ -54,7 +64,7 @@ class View:
 
 		frame_escolhaOponente = Frame(self.__frame_menuPrincipal)
 		frame_escolhaOponente.grid(row=2)
-		self.__opcaoAdversario = IntVar()
+
 		Label(frame_escolhaOponente, text="Você é o Jogador 1").grid(row=0, columnspan=2)
 		Label(frame_escolhaOponente, text="Escolha o Jogador 2:").grid(row=1, columnspan=2)
 		radio_pvp = Radiobutton(frame_escolhaOponente, text="Outro Jogador", var=self.__opcaoAdversario, value=0)
@@ -66,7 +76,7 @@ class View:
 
 		frame_escolhaPrimeiro = Frame(self.__frame_menuPrincipal)
 		frame_escolhaPrimeiro.grid(row=4)
-		self.__opcaoPrimeiro = IntVar()
+
 		Label(frame_escolhaPrimeiro, text="Escolha quem sera o primeiro:").grid(row=0, columnspan=2)
 		radio_pvp = Radiobutton(frame_escolhaPrimeiro, text="Jogador 1", var=self.__opcaoPrimeiro, value=0)
 		radio_pvp.grid(row=1, column=0)
@@ -88,20 +98,41 @@ class View:
 			self.__frame_menuPrincipal.pack_forget()
 
 	def initializeGameMenu(self):
-		separatorSpace = 10
+		separatorSpace = 20
 		self.__frame_jogo = Frame(self.__root)
 
 		frame_tabuleiro = Frame(self.__frame_jogo)
-		frame_tabuleiro.grid(row=0, column=0)
+		frame_tabuleiro.grid(row=0, column=0, sticky=N+S+E+W)
 		self.__canvas_tabuleiro = Canvas(frame_tabuleiro, width=525, height=525, bg="lemon chiffon")
 		self.__canvas_tabuleiro.bind("<Button-1>", self.boardClick)
 		self.__canvas_tabuleiro.grid()
 
-		Frame(self.__frame_jogo).grid(row=0, column=1, padx=separatorSpace)  # Separator
+		Frame(self.__frame_jogo).grid(row=0, column=1, padx=10)  # Separator
 
 		frame_info = Frame(self.__frame_jogo)
 		frame_info.grid(row=0, column=2)
-		Label(frame_info, text="Pontuação:").grid()
+		Label(frame_info, text="Jogador da vez:").grid(row=0, column=0, columnspan=2)
+		Label(frame_info, textvariable=self.__textoJogadorDaVez).grid(row=1, column=0, columnspan=2)
+
+		Frame(frame_info).grid(row=2, columnspan=2, pady=separatorSpace)  # Separator
+
+		Label(frame_info, text="Pontuação").grid(row=3, column=0, columnspan=2)
+		Label(frame_info, text="Jogador 1:").grid(row=4, column=0, padx=10)
+		Label(frame_info, textvariable=self.__scoreJ1).grid(row=5, column=0)
+		Label(frame_info, text="Jogador 2:").grid(row=4, column=1, padx=10)
+		Label(frame_info, textvariable=self.__scoreJ2).grid(row=5, column=1)
+
+
+
+		self.__frameIteracoes = Frame(frame_info)
+		self.__frameIteracoes.grid(row=7, columnspan=2)
+		Frame(self.__frameIteracoes).grid(row=0, columnspan=2, pady=separatorSpace)  # Separator
+		Label(self.__frameIteracoes, text="Dados da última chamada\ndo MinMax:").grid(row=1,columnspan=2)
+		Label(self.__frameIteracoes, text="Iterações: ").grid(row=2, column=0, padx=10)
+		Label(self.__frameIteracoes, textvariable=self.__iteracoesMinMax).grid(row=3, column=0)
+		Label(self.__frameIteracoes, text="Tempo(s): ").grid(row=2, column=1, padx=10)
+		Label(self.__frameIteracoes, textvariable=self.__tempoMinMax).grid(row=3, column=1)
+		self.__frameIteracoes.grid_remove() # Frame Escondido
 
 		self.drawGrid(thck=2)
 
@@ -161,7 +192,7 @@ class View:
 		pxSquareHeight = int(self.__canvas_tabuleiro.cget("height"))/self.__vertSpaces
 		casaX = max(0, min(math.floor(event.x / pxSquareWidth), self.__horSpaces - 1))
 		casaY = max(0, min(math.floor(event.y / pxSquareHeight), self.__vertSpaces - 1))
-		self.__controller.CB_posicaoTabuleiro(casaX, casaY)
+		self.__controller.CB_clicarTabuleiro(casaX, casaY)
 
 	def getJogadorInicial(self):
 		return (self.__opcaoPrimeiro.get() + 1)
@@ -172,3 +203,23 @@ class View:
 	def irParaJogo(self):
 		self.displayMainMenu(False)
 		self.displayGameMenu(True)
+
+	def setJogadorDaVez(self, numJogador):
+		jogador = "Jogador "
+		if numJogador == 1:
+			jogador += "1\nBranco"
+		else:
+			jogador += "2\nPreto"
+		self.__textoJogadorDaVez.set(jogador)
+
+	def setPontuacao(self, pontuacao, jogador):
+		if jogador == 1:
+			self.__scoreJ1.set(pontuacao)
+		else:
+			self.__scoreJ2.set(pontuacao)
+
+	def setIteracoesMinMax(self, iteracoes):
+		self.__iteracoesMinMax.set(iteracoes)
+
+	def setTempoMinMax(self, tempo):
+		self.__tempoMinMax.set(tempo)
