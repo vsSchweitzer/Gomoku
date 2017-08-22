@@ -58,7 +58,7 @@ class View:
 		frame_titulo = Frame(self.__frame_menuPrincipal)
 		frame_titulo.grid(row=0)
 		Label(frame_titulo, text="Gomoku").grid(row=0)
-		Label(frame_titulo, text="Por: Dunia Marchiori e Vinicius Steffani Schweitzer").grid(row=1)
+		Label(frame_titulo, text="Por: Dúnia Marchiori e Vinicius Steffani Schweitzer").grid(row=1)
 
 		Frame(self.__frame_menuPrincipal).grid(row=1, pady=separatorSpace) # Separator
 
@@ -69,7 +69,7 @@ class View:
 		Label(frame_escolhaOponente, text="Escolha o Jogador 2:").grid(row=1, columnspan=2)
 		radio_pvp = Radiobutton(frame_escolhaOponente, text="Outro Jogador", var=self.__opcaoAdversario, value=0)
 		radio_pvp.grid(row=2, column=0)
-		radio_pvpc = Radiobutton(frame_escolhaOponente, text="PC", var=self.__opcaoAdversario, value=1, state=DISABLED)  # DISABLED para primeira versão
+		radio_pvpc = Radiobutton(frame_escolhaOponente, text="Computador", var=self.__opcaoAdversario, value=1, state=DISABLED)  # DISABLED para primeira versão
 		radio_pvpc.grid(row=2, column=1)
 
 		Frame(self.__frame_menuPrincipal).grid(row=3, pady=separatorSpace)  # Separator
@@ -77,7 +77,7 @@ class View:
 		frame_escolhaPrimeiro = Frame(self.__frame_menuPrincipal)
 		frame_escolhaPrimeiro.grid(row=4)
 
-		Label(frame_escolhaPrimeiro, text="Escolha quem sera o primeiro:").grid(row=0, columnspan=2)
+		Label(frame_escolhaPrimeiro, text="Escolha quem será o primeiro:").grid(row=0, columnspan=2)
 		radio_pvp = Radiobutton(frame_escolhaPrimeiro, text="Jogador 1", var=self.__opcaoPrimeiro, value=0)
 		radio_pvp.grid(row=1, column=0)
 		radio_pvpc = Radiobutton(frame_escolhaPrimeiro, text="Jogador 2", var=self.__opcaoPrimeiro, value=1)
@@ -87,7 +87,7 @@ class View:
 
 		frame_comecarJogo = Frame(self.__frame_menuPrincipal)
 		frame_comecarJogo.grid(row=6)
-		btn_comecar = Button(frame_comecarJogo, text="Começar Jogo")
+		btn_comecar = Button(frame_comecarJogo, text="Começar o Jogo")
 		btn_comecar.bind("<Button-1>", self.__controller.CB_botaoComecarJogo)
 		btn_comecar.grid()
 

@@ -24,7 +24,6 @@ class Tabuleiro:
 	def adicionarPeca(self, coord, jogador):
 		self.__tabuleiro[coord.x][coord.y] = jogador.value
 		self.verificaEncadeamentos(coord, jogador)
-		self.verificaFimDeJogo()
 
 	def getMatriz(self):
 		return self.__tabuleiro
@@ -49,14 +48,6 @@ class Tabuleiro:
 
 	def getVencedor(self):
 		return self.__vencedor
-
-	def verificaFimDeJogo(self):
-		self.__fimDeJogo = False
-		for enc in self.__encadeamentos:
-			if enc.getComprimento() >= 5:
-				self.__fimDeJogo = True
-				self.__vencedor = enc.getJogador()
-				break
 
 	# Retorna o valor no tabuleiro na posição coordC seguindo a sequencia CoordA, CoordB, CoordC.
 	def proximaPecaNaSequencia(self, CoordA, CoordB):
@@ -217,6 +208,9 @@ class Tabuleiro:
 	def atualizaEncadeamento(self, coordNova, coordVizinha, direcao, jogador):
 		encadeamento = self.encontraEncadeamento(direcao, coordVizinha, jogador)
 		encadeamento.adicionaCoordenada(coordNova)
+		if encadeamento.getComprimento() >= 5:
+			self.__fimDeJogo = True
+			self.__vencedor = jogador
 		return encadeamento
 
 	def encontraEncadeamento(self, direcao, coord, jogador):
