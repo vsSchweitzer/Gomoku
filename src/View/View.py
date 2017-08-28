@@ -69,7 +69,7 @@ class View:
 		Label(frame_escolhaOponente, text="Escolha o Jogador 2:").grid(row=1, columnspan=2)
 		radio_pvp = Radiobutton(frame_escolhaOponente, text="Outro Jogador", var=self.__opcaoAdversario, value=0)
 		radio_pvp.grid(row=2, column=0)
-		radio_pvpc = Radiobutton(frame_escolhaOponente, text="Computador", var=self.__opcaoAdversario, value=1, state=DISABLED)  # DISABLED para primeira versão
+		radio_pvpc = Radiobutton(frame_escolhaOponente, text="Computador", var=self.__opcaoAdversario, value=1)
 		radio_pvpc.grid(row=2, column=1)
 
 		Frame(self.__frame_menuPrincipal).grid(row=3, pady=separatorSpace)  # Separator
@@ -130,7 +130,7 @@ class View:
 		Label(self.__frameIteracoes, textvariable=self.__iteracoesMinMax).grid(row=3, column=0)
 		Label(self.__frameIteracoes, text="Tempo(s): ").grid(row=2, column=1, padx=10)
 		Label(self.__frameIteracoes, textvariable=self.__tempoMinMax).grid(row=3, column=1)
-		self.__frameIteracoes.grid_remove() # Frame Escondido
+		#self.__frameIteracoes.grid_remove() # Frame Escondido
 
 		self.drawGrid(thck=2)
 

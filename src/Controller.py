@@ -41,4 +41,10 @@ class Controller:
 		self.__view.setPontuacao(pontuacao[0], 1)
 		self.__view.setPontuacao(pontuacao[1], 2)
 
+		iteracoes = self.__model.getStatusComputador()[0]
+		self.__view.setIteracoesMinMax(iteracoes)
+
+		tempo = self.__model.getStatusComputador()[1]
+		self.__view.setTempoMinMax(tempo)
+
 		self.__view.drawBoard(self.__model.getMatriz())

@@ -2,6 +2,7 @@ from Model.Tabuleiro import Tabuleiro
 from Model.Adversario import Adversario
 from Model.Jogador import Jogador
 from Model.Coordenada import Coordenada
+from Model.Computador import Computador
 
 
 # Fachada para o modelo
@@ -10,9 +11,11 @@ class Model:
 	__tabuleiroAtual = None
 	__jogadorDaVez = None  # P1 ou P2
 	__adversario = None  # Humano ou Computador
+	__computador = None
 
 	def __init__(self, numLinhas, numColunas):
 		self.__tabuleiroAtual = Tabuleiro(numLinhas, numColunas)
+		self.__computador = Computador()
 
 	def setJogadorDaVez(self, novoJogador):
 		self.__jogadorDaVez = novoJogador
@@ -28,7 +31,8 @@ class Model:
 				self.passaVez()
 
 			if (self.__adversario == Adversario.COMPUTADOR) and (not self.__tabuleiroAtual.getFimDeJogo()):
-				#self.__computador.jogar(self.__tabuleiroArual)
+				jogadaPC = self.__computador.getProximaJogada(self.__tabuleiroAtual)
+				self.__tabuleiroAtual.adicionarPeca(jogadaPC, self.__jogadorDaVez)
 				self.passaVez()
 
 	def getVencedor(self):
@@ -48,3 +52,6 @@ class Model:
 
 	def getPontuacao(self):
 		return self.__tabuleiroAtual.getPontuacao()
+
+	def getStatusComputador(self):
+		return (self.__computador.getIteracoes(), self.__computador.getTempo())
