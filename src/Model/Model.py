@@ -35,6 +35,11 @@ class Model:
 				self.__tabuleiroAtual.adicionarPeca(jogadaPC, self.__jogadorDaVez)
 				self.passaVez()
 
+	def remover(self, x, y):
+		coord = Coordenada(x, y)
+		if not self.__tabuleiroAtual.espacoVazio(coord):
+			self.__tabuleiroAtual.removerPeca(coord)
+
 	def getVencedor(self):
 		if self.__tabuleiroAtual.getFimDeJogo():
 			return self.__tabuleiroAtual.getVencedor()

@@ -13,7 +13,7 @@ class Computador():
 	__numIteracoes = None
 	__tempoUltimaJogada = None
 
-	def __init__(self, dificuldade=3, jogador=Jogador.DOIS):
+	def __init__(self, dificuldade=4, jogador=Jogador.DOIS):
 		self.__dificuldade = dificuldade
 		self.__jogador = jogador
 
@@ -26,7 +26,7 @@ class Computador():
 
 	def alpha_beta(self, tabuleiro, profundidade, eJogadorMax=True, alpha=(-math.inf), beta=math.inf):
 		self.__numIteracoes += 1
-		melhorValor = None
+		#melhorValor = None
 		jogada = None
 
 		if profundidade == 0:
@@ -40,7 +40,11 @@ class Computador():
 				for coord in listaJogadasPossiveis:
 					#if self.__numIteracoes >= 3125:
 					#	print("Agora")
+					#print(self.__numIteracoes)
+					estadoJogo = tabuleiro.getFimDeJogo()
 					tabuleiro.adicionarPeca(coord, self.__jogador)
+					if tabuleiro.getFimDeJogo != estadoJogo:
+						tabuleiro.setFimDeJogo(False)
 
 					#novoEstado = tabuleiro.getFilho(coord, self.__jogador)
 
@@ -59,7 +63,10 @@ class Computador():
 
 				listaJogadasPossiveis = tabuleiro.getJogadasPossiveis()
 				for coord in listaJogadasPossiveis:
+					estadoJogo = tabuleiro.getFimDeJogo()
 					tabuleiro.adicionarPeca(coord, self.__jogador.jogadorOposto())
+					if tabuleiro.getFimDeJogo != estadoJogo:
+						tabuleiro.setFimDeJogo(False)
 
 					#novoEstado = tabuleiro.getFilho(coord, self.__jogador.jogadorOposto())
 

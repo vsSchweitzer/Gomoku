@@ -105,6 +105,7 @@ class View:
 		frame_tabuleiro.grid(row=0, column=0, rowspan=2, sticky=N+S+E+W)
 		self.__canvas_tabuleiro = Canvas(frame_tabuleiro, width=525, height=525, bg="lemon chiffon")
 		self.__canvas_tabuleiro.bind("<Button-1>", self.boardClick)
+		self.__canvas_tabuleiro.bind("<Button-3>", self.boardClickR)
 		self.__canvas_tabuleiro.grid()
 
 		Frame(self.__frame_jogo).grid(row=0, column=1, padx=10)  # Separator
@@ -191,6 +192,13 @@ class View:
 		casaX = max(0, min(math.floor(event.x / pxSquareWidth), self.__horSpaces - 1))
 		casaY = max(0, min(math.floor(event.y / pxSquareHeight), self.__vertSpaces - 1))
 		self.__controller.CB_clicarTabuleiro(casaX, casaY)
+
+	def boardClickR(self, event,):
+		pxSquareWidth = int(self.__canvas_tabuleiro.cget("width"))/self.__horSpaces
+		pxSquareHeight = int(self.__canvas_tabuleiro.cget("height"))/self.__vertSpaces
+		casaX = max(0, min(math.floor(event.x / pxSquareWidth), self.__horSpaces - 1))
+		casaY = max(0, min(math.floor(event.y / pxSquareHeight), self.__vertSpaces - 1))
+		self.__controller.CB_remover(casaX, casaY)
 
 	def getJogadorInicial(self):
 		return (self.__opcaoPrimeiro.get() + 1)

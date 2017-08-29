@@ -30,9 +30,8 @@ class Tabuleiro:
 	def removerPeca(self, coord):
 		#print("Removendo: " + str(coord.x) + ", " + str(coord.y))
 		jogador = Jogador(self.getValor(coord))
-		self.verificaEncadeamentosRetiraPeca(coord, jogador)
 		self.__tabuleiro[coord.x][coord.y] = 0
-
+		self.verificaEncadeamentosRetiraPeca(coord, jogador)
 
 	def getMatriz(self):
 		return self.__tabuleiro
@@ -54,6 +53,9 @@ class Tabuleiro:
 
 	def getFimDeJogo(self):
 		return self.__fimDeJogo
+
+	def setFimDeJogo(self, novoEstado):
+		self.__fimDeJogo = novoEstado
 
 	def getVencedor(self):
 		return self.__vencedor
@@ -133,9 +135,16 @@ class Tabuleiro:
 
 						elif valorOposto == jogador.value:
 							encadeamento = self.atualizaEncadeamento(coordNova, coordVizinha, direcao, jogador)
-							encadeamentoOposto = self.encontraEncadeamento(direcao, coordOposta, jogador)
+							encadeamentoOposto = self.encontraEncadeamento(direcao, coordOposta, jogador, removerEnc=True)
 							encadeamento.mesclaEncadeamento(encadeamentoOposto)
-							self.__encadeamentos.remove(encadeamentoOposto)
+							#self.__encadeamentos.remove(encadeamentoOposto)
+							aberturas = encadeamento.getAberturas() + encadeamentoOposto.getAberturas()
+							if aberturas == 4:
+								encadeamento.setAberturas(2)
+							elif aberturas == 3:
+								encadeamento.setAberturas(1)
+							elif aberturas == 2:
+								encadeamento.setAberturas(0)
 
 						elif valorOposto == jogador.jogadorOposto().value:
 							encadeamento = self.atualizaEncadeamento(coordNova, coordVizinha, direcao, jogador)
@@ -255,7 +264,7 @@ class Tabuleiro:
 							coordA = coordRemovida
 							coordB = coordVizinha
 							proxCoord = self.proximaCoordNaSequencia(coordA, coordB)
-							while self.getValor(proxCoord) == jogador:
+							while self.getValor(proxCoord) == jogador.value:
 								novoEncVizinho.adicionaCoordenada(proxCoord)
 								coordA = coordB
 								coordB = proxCoord
@@ -271,7 +280,7 @@ class Tabuleiro:
 							coordA = coordRemovida
 							coordB = coordOposta
 							proxCoord = self.proximaCoordNaSequencia(coordA, coordB)
-							while self.getValor(proxCoord) == jogador:
+							while self.getValor(proxCoord) == jogador.value:
 								novoEncOposto.adicionaCoordenada(proxCoord)
 								coordA = coordB
 								coordB = proxCoord
@@ -350,7 +359,7 @@ class Tabuleiro:
 							encadeamentoAdversario.incrementarAberturas()
 
 						elif valorOposto == -1:
-							encadeamento = self.encontraEncadeamento(direcao, coordRemovida, jogador, removerEnc=True)
+							self.encontraEncadeamento(direcao, coordRemovida, jogador, removerEnc=True)
 							#self.__encadeamentos.remove(encadeamento)
 							# del encadeamento
 

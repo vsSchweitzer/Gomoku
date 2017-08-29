@@ -41,6 +41,7 @@ class Encadeamento:
 			return 6250
 		'''
 
+
 		if self.getComprimento() < 5:
 			return (pow(self.getComprimento(), 2) * self.__aberturas)
 		else:
@@ -57,6 +58,9 @@ class Encadeamento:
 
 	def setAberturas(self, aberturas):
 		self.__aberturas = aberturas
+
+	def getAberturas(self):
+		return self.__aberturas
 
 	def mesclaEncadeamento(self, encadeamento):
 		self.__coordenadas = self.__coordenadas + encadeamento.getCoordenadas()

@@ -48,3 +48,11 @@ class Controller:
 		self.__view.setTempoMinMax(tempo)
 
 		self.__view.drawBoard(self.__model.getMatriz())
+
+	def CB_remover(self, x, y):
+		print("O espaço do tabuleiro na posição", x, y, "foi clicado com o botão direito")
+		self.__model.remover(x, y)
+
+		self.__view.drawBoard(self.__model.getMatriz())
+
+
