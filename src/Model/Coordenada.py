@@ -21,8 +21,4 @@ class Coordenada:
 
 	# Sobrecarga do operador !=
 	def __ne__(self, other):
-		eq = self.__eq__(other)
-		if eq == NotImplemented:
-			return eq
-		else:
-			return not eq
+		return not (self == other)

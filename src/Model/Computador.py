@@ -13,7 +13,7 @@ class Computador():
 	__numIteracoes = None
 	__tempoUltimaJogada = None
 
-	def __init__(self, dificuldade=4, jogador=Jogador.DOIS):
+	def __init__(self, dificuldade=2, jogador=Jogador.DOIS):
 		self.__dificuldade = dificuldade
 		self.__jogador = jogador
 
@@ -21,7 +21,7 @@ class Computador():
 		self.__numIteracoes = 0
 		tempoInicial = time.time()
 		coord = self.alpha_beta(tabuleiroAtual, self.__dificuldade)[0]
-		self.__tempoUltimaJogada = round(time.time() - tempoInicial, 2)
+		self.__tempoUltimaJogada = round(time.time() - tempoInicial, 3)
 		return coord
 
 	def alpha_beta(self, tabuleiro, profundidade, eJogadorMax=True, alpha=(-math.inf), beta=math.inf):
@@ -29,28 +29,23 @@ class Computador():
 		#melhorValor = None
 		jogada = None
 
-		if profundidade == 0:
+		if profundidade == 0 or tabuleiro.getFimDeJogo():
 			#print("Volta")
-			return (None ,tabuleiro.getHeuristica())
+			return (None ,self.getPontuacao(tabuleiro))
 		else:
 			if eJogadorMax:
 				melhorValor = alpha
 
 				listaJogadasPossiveis = tabuleiro.getJogadasPossiveis()
 				for coord in listaJogadasPossiveis:
-					#if self.__numIteracoes >= 3125:
-					#	print("Agora")
-					#print(self.__numIteracoes)
+
 					estadoJogo = tabuleiro.getFimDeJogo()
 					tabuleiro.adicionarPeca(coord, self.__jogador)
-					if tabuleiro.getFimDeJogo != estadoJogo:
-						tabuleiro.setFimDeJogo(False)
-
-					#novoEstado = tabuleiro.getFilho(coord, self.__jogador)
 
 					valorFilho = self.alpha_beta(tabuleiro, profundidade - 1, False, melhorValor, beta)[1]
 
 					tabuleiro.removerPeca(coord)
+					tabuleiro.setFimDeJogo(estadoJogo)
 
 					if melhorValor < valorFilho:
 						melhorValor = valorFilho
@@ -63,16 +58,14 @@ class Computador():
 
 				listaJogadasPossiveis = tabuleiro.getJogadasPossiveis()
 				for coord in listaJogadasPossiveis:
+
 					estadoJogo = tabuleiro.getFimDeJogo()
 					tabuleiro.adicionarPeca(coord, self.__jogador.jogadorOposto())
-					if tabuleiro.getFimDeJogo != estadoJogo:
-						tabuleiro.setFimDeJogo(False)
-
-					#novoEstado = tabuleiro.getFilho(coord, self.__jogador.jogadorOposto())
 
 					valorFilho = self.alpha_beta(tabuleiro, profundidade - 1, True, alpha, melhorValor)[1]
 
 					tabuleiro.removerPeca(coord)
+					tabuleiro.setFimDeJogo(estadoJogo)
 
 					if melhorValor > valorFilho:
 						melhorValor = valorFilho
@@ -88,3 +81,19 @@ class Computador():
 
 	def getTempo(self):
 		return self.__tempoUltimaJogada
+
+	def getPontuacao(self, tabuleiro):
+		if tabuleiro.getFimDeJogo():
+			utilidade = 999999999
+			if tabuleiro.getVencedor() is not self.__jogador:
+				utilidade *= -1
+			return utilidade
+		else:
+			pontuacaoP1, pontuacaoP2 = tabuleiro.getPontuacao()
+			heuristica = pontuacaoP1 - pontuacaoP2
+			if self.__jogador is not Jogador.UM:
+				heuristica *= -1
+			return heuristica
+
+	def setDificuldade(self, dificuldade):
+		self.__dificuldade = dificuldade

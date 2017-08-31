@@ -29,18 +29,11 @@ class Encadeamento:
 		return self.__jogador
 
 	def getPontuacao(self):
-		'''
-		if self.getComprimento() < 4:
-			return (pow(self.getComprimento(), self.getComprimento()) * self.__aberturas)
-		elif self.getComprimento() == 4:
-			if self.__aberturas > 0:
-				return 512
-			else:
-				return 0
-		else:
-			return 6250
-		'''
 
+		#if self.getComprimento() < 5:
+		#	return (pow(self.getComprimento(), self.getComprimento()) * self.__aberturas)
+		#else:
+		#	return 6250
 
 		if self.getComprimento() < 5:
 			return (pow(self.getComprimento(), 2) * self.__aberturas)
@@ -64,10 +57,3 @@ class Encadeamento:
 
 	def mesclaEncadeamento(self, encadeamento):
 		self.__coordenadas = self.__coordenadas + encadeamento.getCoordenadas()
-
-	def clone(self):
-		copia = Encadeamento(self.__jogador, self.__direcao)
-		copia.__aberturas = self.__aberturas
-		for coord in self.getCoordenadas():
-			copia.adicionaCoordenada(coord)
-		return copia

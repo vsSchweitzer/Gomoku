@@ -19,27 +19,61 @@ class Controller:
 
 		jogadorInicial = Jogador(self.__view.getJogadorInicial())
 		self.__model.setJogadorDaVez(jogadorInicial)
-		self.__view.setJogadorDaVez(self.__view.getJogadorInicial())
+		isIA = (self.__model.adversarioDaVez() == Adversario.COMPUTADOR)
+		self.__view.setJogadorDaVez(self.__view.getJogadorInicial(), isIA)
 
-		tipoAdversario = Adversario(self.__view.getTipoAdversario())
-		self.__model.setAdversario(tipoAdversario)
+		tipoAdversario1, tipoAdversario2 = self.__view.getTipoAdversarios()
+		tipoAdversario1 = Adversario(tipoAdversario1)
+		tipoAdversario2 = Adversario(tipoAdversario2)
+		self.__model.setAdversarios(tipoAdversario1, tipoAdversario2)
+
+		profundidade = self.__view.getProfundidade()
+		self.__model.setDificuldade(profundidade)
+
+		if tipoAdversario1 == Adversario.HUMANO and tipoAdversario2 == Adversario.HUMANO:
+			self.__view.hideIAStats()
+		else:
+			self.atualizaJogo()
+			self.jogarIA()
 
 		print("Jogo Começou")
 
 	def CB_clicarTabuleiro(self, x, y):
 		print("O espaço do tabuleiro na posição", x, y, "foi clicado")
-		self.__model.jogar(x, y)
+		self.jogarHumano(x, y)
+
+	def CB_remover(self, x, y):
+		print("O espaço do tabuleiro na posição", x, y, "foi clicado com o botão direito")
+		self.__model.remover(x, y)
+		self.atualizaJogo()
+
+	def jogarHumano(self, x, y):
+		self.__model.jogarHumano(x, y)
+		self.atualizaJogo()
+		if self.__model.adversarioDaVez() == Adversario.COMPUTADOR:
+			self.jogarIA()
+
+	def jogarIA(self):
+		self.__model.jogarComputador()
+		self.atualizaJogo()
+		if self.__model.adversarioDaVez() == Adversario.COMPUTADOR and not self.__model.getFimDeJogo():
+			self.jogarIA()
+
+	def atualizaJogo(self):
+		self.__view.drawBoard(self.__model.getMatriz())
 
 		vencedor = self.__model.getVencedor()
 		if vencedor != None:
 			self.__view.mostrarAreaVencedor(vencedor.value)
 
 		jogadorDaVez = self.__model.getJogadorDaVez()
-		self.__view.setJogadorDaVez(jogadorDaVez)
+		isIA = (self.__model.adversarioDaVez() == Adversario.COMPUTADOR)
+		isPensando = isIA and not self.__model.getFimDeJogo()
+		self.__view.setJogadorDaVez(jogadorDaVez, isPensando)
 
-		pontuacao = self.__model.getPontuacao()
-		self.__view.setPontuacao(pontuacao[0], 1)
-		self.__view.setPontuacao(pontuacao[1], 2)
+		pontuacaoP1, pontuacaoP2 = self.__model.getPontuacao()
+		self.__view.setPontuacao(pontuacaoP1, 1)
+		self.__view.setPontuacao(pontuacaoP2, 2)
 
 		iteracoes = self.__model.getStatusComputador()[0]
 		self.__view.setIteracoesMinMax(iteracoes)
@@ -47,12 +81,4 @@ class Controller:
 		tempo = self.__model.getStatusComputador()[1]
 		self.__view.setTempoMinMax(tempo)
 
-		self.__view.drawBoard(self.__model.getMatriz())
-
-	def CB_remover(self, x, y):
-		print("O espaço do tabuleiro na posição", x, y, "foi clicado com o botão direito")
-		self.__model.remover(x, y)
-
-		self.__view.drawBoard(self.__model.getMatriz())
-
-
+		self.__view.updateGame()

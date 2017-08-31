@@ -366,7 +366,7 @@ class Tabuleiro:
 	def atualizaEncadeamento(self, coordNova, coordVizinha, direcao, jogador):
 		encadeamento = self.encontraEncadeamento(direcao, coordVizinha, jogador)
 		encadeamento.adicionaCoordenada(coordNova)
-		if encadeamento.getComprimento() >= 5:
+		if encadeamento.getComprimento() >= 5 and not self.__fimDeJogo:
 			self.__fimDeJogo = True
 			self.__vencedor = jogador
 		return encadeamento
@@ -429,82 +429,45 @@ class Tabuleiro:
 				totalP1 += enc.getPontuacao()
 			else:
 				totalP2 += enc.getPontuacao()
-		return (totalP1, totalP2, totalP2-totalP1)
-
-	def getHeuristica(self):
-		return self.getPontuacao()[2]
-
-	def getFilho(self, coord, jogador):
-		filho = self.clone()
-		filho.adicionarPeca(coord, jogador)
-		return filho
+		return totalP1, totalP2
 
 	def getJogadasPossiveis(self):
 		listaJogadas = []
 
-		top = 0
-		down = self.getAltura() -1
-		left = 0
-		right = self.getLargura() -1
+		linhaInicial = 0
+		colunaInicial = 0
+		linhaFinal = self.getAltura()
+		colunaFinal = self.getLargura()
 
-		while True:
-			for j in range(left, right + 1):
-				coord = Coordenada(top, j)
-				if self.getValor(coord) == 0:
+		while linhaInicial < linhaFinal and colunaInicial < colunaFinal:
+			for i in range(colunaInicial, colunaFinal):
+				coord = Coordenada(linhaInicial, i)
+				if self.espacoVazio(coord):
 					listaJogadas.append(coord)
-			top += 1
-			if (top > down) or (left > right):
-				break
 
-			for i in range(top, down + 1):
-				coord = Coordenada(i, right)
-				if self.getValor(coord) == 0:
+			linhaInicial += 1
+
+			for i in range(linhaInicial, linhaFinal):
+				coord = Coordenada(i, colunaFinal-1)
+				if self.espacoVazio(coord):
 					listaJogadas.append(coord)
-				right -= 1
-			if (top > down) or (left > right):
-				break
 
-			for j in range(left + 1, right):
-				coord = Coordenada(down, j)
-				if self.getValor(coord) == 0:
-					listaJogadas.append(coord)
-			down -= 1
-			if (top > down) or (left > right):
-				break
+			colunaFinal -= 1
 
-			for i in range(top + 1, down):
-				coord = Coordenada(i, left)
-				if self.getValor(coord) == 0:
-					listaJogadas.append(coord)
-			left += 1
-			if (top > down) or (left > right):
-				break
+			if linhaInicial < linhaFinal:
+				for i in range(colunaFinal-1, colunaInicial-1, -1):
+					coord = Coordenada(linhaFinal-1, i)
+					if self.espacoVazio(coord):
+						listaJogadas.append(coord)
 
+				linhaFinal -= 1
+
+			if colunaInicial < colunaFinal:
+				for i in range(linhaFinal-1, linhaInicial-1, -1):
+					coord = Coordenada(i, colunaInicial)
+					if self.espacoVazio(coord):
+						listaJogadas.append(coord)
+
+				colunaInicial += 1
 		listaJogadas.reverse()
-
-
-		'''
-		listaJogadas = []
-		for i in range(0, self.getAltura()):
-			for j in range(0, self.getLargura()):
-				coord = Coordenada(i, j)
-				if self.getValor(coord) == 0:
-					listaJogadas.append(coord)
-		'''
 		return listaJogadas
-
-	def clone(self):
-		copia = Tabuleiro(self.getAltura(), self.getLargura())
-		copia.__fimDeJogo = self.__fimDeJogo
-		copia.__vencedor = self.__vencedor
-
-		for enc in self.__encadeamentos:
-			copia.__encadeamentos.append(enc.clone())
-
-		for i in range(0, self.getAltura()):
-			copia.__tabuleiro[i] = list(self.__tabuleiro[i])
-
-		for i in range(0, self.getAltura()):
-			for j in range(0, self.getLargura()):
-				copia.__tabuleiro[i][j] = self.__tabuleiro[i][j]
-		return copia
