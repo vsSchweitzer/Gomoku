@@ -1,8 +1,8 @@
 import math
 import time
+import sys
 from Model.Jogador import Jogador
 from Model.Coordenada import Coordenada
-
 
 class Computador():
 
@@ -83,7 +83,7 @@ class Computador():
 
 	def getPontuacao(self, tabuleiro):
 		if tabuleiro.getFimDeJogo():
-			utilidade = math.inf
+			utilidade = sys.maxsize  # Maior inteiro
 			if tabuleiro.getVencedor() is not self.__jogador:
 				utilidade *= -1
 			return utilidade
