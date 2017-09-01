@@ -38,7 +38,6 @@ class Computador():
 
 				listaJogadasPossiveis = tabuleiro.getJogadasPossiveis()
 				for coord in listaJogadasPossiveis:
-
 					estadoJogo = tabuleiro.getFimDeJogo()
 					tabuleiro.adicionarPeca(coord, self.__jogador)
 
@@ -71,7 +70,7 @@ class Computador():
 						melhorValor = valorFilho
 						jogada = coord
 
-					if melhorValor <= beta:
+					if melhorValor <= alpha:
 						break
 
 		return (jogada, melhorValor)
@@ -84,7 +83,7 @@ class Computador():
 
 	def getPontuacao(self, tabuleiro):
 		if tabuleiro.getFimDeJogo():
-			utilidade = 999999999
+			utilidade = math.inf
 			if tabuleiro.getVencedor() is not self.__jogador:
 				utilidade *= -1
 			return utilidade

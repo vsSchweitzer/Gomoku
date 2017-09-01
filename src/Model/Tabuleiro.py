@@ -134,17 +134,18 @@ class Tabuleiro:
 							self.atualizaEncadeamento(coordNova, coordVizinha, direcao, jogador)
 
 						elif valorOposto == jogador.value:
-							encadeamento = self.atualizaEncadeamento(coordNova, coordVizinha, direcao, jogador)
+							encadeamentoVizinho = self.encontraEncadeamento(direcao, coordVizinha, jogador)
 							encadeamentoOposto = self.encontraEncadeamento(direcao, coordOposta, jogador, removerEnc=True)
-							encadeamento.mesclaEncadeamento(encadeamentoOposto)
+							encadeamentoVizinho.mesclaEncadeamento(encadeamentoOposto)
 							#self.__encadeamentos.remove(encadeamentoOposto)
-							aberturas = encadeamento.getAberturas() + encadeamentoOposto.getAberturas()
+							aberturas = encadeamentoVizinho.getAberturas() + encadeamentoOposto.getAberturas()
 							if aberturas == 4:
-								encadeamento.setAberturas(2)
+								encadeamentoVizinho.setAberturas(2)
 							elif aberturas == 3:
-								encadeamento.setAberturas(1)
+								encadeamentoVizinho.setAberturas(1)
 							elif aberturas == 2:
-								encadeamento.setAberturas(0)
+								encadeamentoVizinho.setAberturas(0)
+							self.atualizaEncadeamento(coordNova, coordVizinha, direcao, jogador)
 
 						elif valorOposto == jogador.jogadorOposto().value:
 							encadeamento = self.atualizaEncadeamento(coordNova, coordVizinha, direcao, jogador)

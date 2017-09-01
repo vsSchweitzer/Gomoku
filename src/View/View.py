@@ -103,7 +103,7 @@ class View:
 		frame_profundidade = Frame(self.__frame_menuPrincipal)
 		frame_profundidade.grid(row=6)
 		opcoesProfundidade = 4
-		Label(frame_profundidade, text="Escolha a profundidade da busca da IA:").grid(row=0, columnspan=opcoesProfundidade)
+		Label(frame_profundidade, text="Escolha a profundidade da busca da IA (Recomendado: 2):").grid(row=0, columnspan=opcoesProfundidade)
 		for i in range(1, opcoesProfundidade+1):
 			radio_prof = Radiobutton(frame_profundidade, text=str(i), var=self.__profundidade, value=i, command=self.updateTempoEsperado)
 			radio_prof.grid(row=1, column=i-1)
@@ -248,11 +248,11 @@ class View:
 		if profundidade == 1:
 			texto += "0.07s"
 		elif profundidade == 2:
-			texto += "0.20s"
+			texto += "0.70s"
 		elif profundidade == 3:
 			texto += "10.00s"
 		elif profundidade == 4:
-			texto += "30.00s"
+			texto += "60.00s"
 		self.__tempoEsperado.set(texto)
 
 	def irParaJogo(self):

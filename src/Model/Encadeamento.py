@@ -29,16 +29,10 @@ class Encadeamento:
 		return self.__jogador
 
 	def getPontuacao(self):
-
-		#if self.getComprimento() < 5:
-		#	return (pow(self.getComprimento(), self.getComprimento()) * self.__aberturas)
-		#else:
-		#	return 6250
-
 		if self.getComprimento() < 5:
-			return (pow(self.getComprimento(), 2) * self.__aberturas)
+			return (pow(self.getComprimento(), self.getComprimento()) * self.__aberturas)
 		else:
-			return 50
+			return 6250
 
 	def getComprimento(self):
 		return len(self.__coordenadas)
